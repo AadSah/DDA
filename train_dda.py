@@ -291,16 +291,16 @@ def train(config):
         n_flops, n_params = measure_model(base_network, IM_SIZE, IM_SIZE)
         torch.save(n_flops, os.path.join(config["output_path"], 'flops.pth'))
     base_network = base_network.cuda()
-    ###state_dict = torch.load(net_config["preTrained"])['state_dict']
-    ###state_dict_adapt = {}
-    ###for key in state_dict.keys():
-    ###    if key[:17] == "module.classifier":
-    ###        pass
-    ###    else:
-    ###        state_dict_adapt[key[7:]] = state_dict[key]
+    state_dict = torch.load(net_config["preTrained"])['state_dict']
+    state_dict_adapt = {}
+    for key in state_dict.keys():
+        if key[:17] == "module.classifier":
+            pass
+        else:
+            state_dict_adapt[key[7:]] = state_dict[key]
 
     # set base_network
-    ###base_network.load_state_dict(state_dict_adapt, strict=False)
+    base_network.load_state_dict(state_dict_adapt, strict=False)
     # set classifier
     classifier = network.GroupClassifiers(
         nblocks=base_network.get_nBlocks(),
@@ -540,9 +540,8 @@ def train(config):
             domain = torch.cat((domain_source[j], domain_target[j]), dim=0)
             batch_size = domain.size(0) // 2
             if has_pseudo:
-                dc_target = torch.from_numpy(
-                    np.array([[1]] * source_batchsize + [[0]] * pseudo_batchsize + [[0]] * source_batchsize + [[1]] * pseudo_batchsize)).float().cuda()
-            else:
+                dc_target = torch.from_numpy(np.array([[1]] * source_batchsize + [[0]] * pseudo_batchsize + [[0]] * source_batchsize + [[1]] * pseudo_batchsize)).float().cuda()
+            else:                
                 dc_target = torch.from_numpy(np.array([[1]] * batch_size + [[0]] * batch_size)).float().cuda()
             transfer_loss += nn.BCELoss()(domain, dc_target)
 
