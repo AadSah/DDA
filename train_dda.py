@@ -541,14 +541,9 @@ def train(config):
             batch_size = domain.size(0) // 2
             if has_pseudo:
                 dc_target = torch.from_numpy(
-                    np.array([[1]] * source_batchsize +
-                             [[0]] * pseudo_batchsize +
-                             [[0]] * source_batchsize +
-                             [[1]] * pseudo_batchsize)).float().cuda()
+                    np.array([[1]] * source_batchsize + [[0]] * pseudo_batchsize + [[0]] * source_batchsize + [[1]] * pseudo_batchsize)).float().cuda()
             else:
-                dc_target = torch.from_numpy(
-                    np.array([[1]] * batch_size +
-                             [[0]] * batch_size)).float().cuda()
+                dc_target = torch.from_numpy(np.array([[1]] * batch_size + [[0]] * batch_size)).float().cuda()
             transfer_loss += nn.BCELoss()(domain, dc_target)
 
         total_loss = classifier_loss + loss_params["trade_off"] * transfer_loss
