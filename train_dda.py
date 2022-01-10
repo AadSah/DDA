@@ -291,16 +291,16 @@ def train(config):
         n_flops, n_params = measure_model(base_network, IM_SIZE, IM_SIZE)
         torch.save(n_flops, os.path.join(config["output_path"], 'flops.pth'))
     base_network = base_network.cuda()
-    state_dict = torch.load(net_config["preTrained"])['state_dict']
-    state_dict_adapt = {}
-    for key in state_dict.keys():
-        if key[:17] == "module.classifier":
-            pass
-        else:
-            state_dict_adapt[key[7:]] = state_dict[key]
+    ###state_dict = torch.load(net_config["preTrained"])['state_dict']
+    ###state_dict_adapt = {}
+    ###for key in state_dict.keys():
+    ###    if key[:17] == "module.classifier":
+    ###        pass
+    ###    else:
+    ###        state_dict_adapt[key[7:]] = state_dict[key]
 
     # set base_network
-    base_network.load_state_dict(state_dict_adapt, strict=False)
+    ###base_network.load_state_dict(state_dict_adapt, strict=False)
     # set classifier
     classifier = network.GroupClassifiers(
         nblocks=base_network.get_nBlocks(),
