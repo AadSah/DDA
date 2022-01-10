@@ -567,8 +567,8 @@ if __name__ == "__main__":
     parser.add_argument(
         '--dset',
         type=str,
-        default='visda',
-        choices=['visda', 'domainnet'],
+        default='officehome',
+        choices=['visda', 'domainnet', 'officehome'],
         help="The dataset or source dataset used")
     parser.add_argument(
         '--s_dset_path',
@@ -825,6 +825,9 @@ if __name__ == "__main__":
     elif config["dataset"] == "domainnet":
         # config["optimizer"]["lr_param"]["lr"] = 0.015 # optimal parameters
         config["network"]["params"]["class_num"] = 345
+    elif config["dataset"] == "officehome":
+        # config["optimizer"]["lr_param"]["lr"] = 0.015 # optimal parameters
+        config["network"]["params"]["class_num"] = 65
     else:
         raise ValueError(
             'Dataset cannot be recognized. Please define your own dataset here.'
